@@ -100,6 +100,7 @@ export const getWatchlist=async(req,res,next)=>{
     }
 };
 
+
 export const updateWatchlist=async(req,res,next)=>{
     const{u_id,id}=req.body;
     try{
@@ -111,12 +112,43 @@ export const updateWatchlist=async(req,res,next)=>{
     }
 };
 
-export const deleteWatchlist=async(req,res,next)=>{
-    try{
-        const deletewl=await deleteWatchlistService(req.params.id);
-        if(!deletewl)return handleResponse(res,404,"Watchlist not found");
-        handleResponse(res,200,"Watchlist deleted successfully",deletewl);
-    }catch(error){
+// export const deleteWatchlist=async(req,res,next)=>{
+//     try{
+//         const deletewl=await deleteWatchlistService(req.params.id);
+//         if(!deletewl)return handleResponse(res,404,"Watchlist not found");
+//         handleResponse(res,200,"Watchlist deleted successfully",deletewl);
+//     }catch(error){
+//         next(error);
+//     }
+// };
+// export const deleteWatchlist = async (req, res, next) => {
+//     const { u_id, id } = req.params;
+//     try {
+//         const deletewl = await deleteWatchlistService(u_id, id);
+//         if (!deletewl) return handleResponse(res, 404, "Watchlist not found");
+//         handleResponse(res, 200, "Watchlist deleted successfully", deletewl);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+export const deleteWatchlist = async (req, res, next) => {
+    try {
+        const { u_id, id } = req.params;
+        console.log('Deleting watchlist item:', { u_id, id }); // Add logging
+
+        if (!u_id || !id) {
+            return handleResponse(res, 400, "Missing user_id or ticker");
+        }
+
+        const deletewl = await deleteWatchlistService(u_id, id);
+        if (!deletewl) {
+            return handleResponse(res, 404, "Watchlist item not found");
+        }
+        
+        return handleResponse(res, 200, "Watchlist item deleted successfully", deletewl);
+    } catch (error) {
+        console.error('Delete watchlist error:', error); // Add error logging
         next(error);
     }
 };

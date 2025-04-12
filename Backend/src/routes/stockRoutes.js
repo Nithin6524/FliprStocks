@@ -9,7 +9,7 @@ const router =express.Router();
 router.get("/watchlist",getWatchlist);
 router.post("/watchlist",updateWatchlist);
 router.put("/watchlist",updateWatchlist);
-router.delete("/watchlist/:id",deleteWatchlist);
+router.delete("/watchlist/:u_id/:id",deleteWatchlist);
 
 router.get("/",getAllStocks);
 // router.get("/user",getAllUsers);

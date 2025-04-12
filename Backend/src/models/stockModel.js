@@ -46,10 +46,9 @@ export const getWatchlistService = async () => {
         s.change_percent
         FROM watchlists w
         JOIN stocks s ON w.ticker = s.ticker
-        WHERE w.user_id =
-        `,[u_id]
+        `
     );
-    return result;
+    return result.rows;
 };
 
 export const updateWatchlistService = async (u_id,id) => {
@@ -72,7 +71,38 @@ export const updateWatchlistService = async (u_id,id) => {
     return result.rows;
 };
 
-export const deleteWatchlistService = async (id) => {
-    const result = await pool.query('DELETE FROM watchlists WHERE ticker = $1 RETURNING *', [id]);
-    return result.rows[0];
+// export const deleteWatchlistService = async (u_id,id) => {
+//     const result = await pool.query('DELETE FROM watchlists WHERE user_id = $1 AND ticker = $2 AND  RETURNING *', [u_id,id]);
+//     return result.rows[0];
+// };
+// export const deleteWatchlistService = async (u_id, id) => {
+//     const result = await pool.query(
+//         'DELETE FROM watchlists WHERE user_id = $1 AND ticker = $2 RETURNING *',
+//         [u_id, id]
+//     );
+//     return result.rows[0];
+// };
+// export const deleteWatchlist = async (req, res, next) => {
+//     const { u_id, id } = req.params;
+//     try {
+//         const deletewl = await deleteWatchlistService(u_id, id);
+//         if (!deletewl) return handleResponse(res, 404, "Watchlist not found");
+//         handleResponse(res, 200, "Watchlist deleted successfully", deletewl);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+export const deleteWatchlistService = async (u_id, id) => {
+    try {
+        console.log('Executing delete query with:', { u_id, id }); // Add logging
+        const result = await pool.query(
+            'DELETE FROM watchlists WHERE user_id = $1 AND ticker = $2 RETURNING *',
+            [u_id, id]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error('Database error:', error); // Add error logging
+        throw error;
+    }
 };
