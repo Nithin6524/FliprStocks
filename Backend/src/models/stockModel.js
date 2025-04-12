@@ -38,19 +38,7 @@ export const getStockByIdService = async (id) => {
 
 
 export const getWatchlistService = async () => {
-    const result = await pool.query('select ticker from watchlists');
-    return result.rows[0];
-};
-
-export const updateWatchlistService = async (u_id,id) => {
     const result = await pool.query(
-        `INSERT INTO watchlists (user_id, ticker, added_at)
-         VALUES ($1, $2, NOW())
-         ON CONFLICT (user_id, ticker) DO NOTHING
-         RETURNING *`,
-        [u_id, id]
-      );
-    const res2=await pool.query(
         `SELECT 
         s.short_name,
         s.ticker,
@@ -58,10 +46,30 @@ export const updateWatchlistService = async (u_id,id) => {
         s.change_percent
         FROM watchlists w
         JOIN stocks s ON w.ticker = s.ticker
-        WHERE w.user_id = $1;
+        WHERE w.user_id =
         `,[u_id]
     );
-    return result.rows[0];
+    return result;
+};
+
+export const updateWatchlistService = async (u_id,id) => {
+    const result = await pool.query(
+        `select * from watchlists w
+        where user_id=$1 and ticker=$2`,
+        [u_id, id]
+      );
+    // const res2=await pool.query(
+    //     `SELECT 
+    //     s.short_name,
+    //     s.ticker,
+    //     s.current_price,
+    //     s.change_percent
+    //     FROM watchlists w
+    //     JOIN stocks s ON w.ticker = s.ticker
+    //     WHERE w.user_id = $1;
+    //     `,[u_id]
+    // );
+    return result.rows;
 };
 
 export const deleteWatchlistService = async (id) => {
