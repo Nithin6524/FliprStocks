@@ -1,6 +1,9 @@
 import {
     getAllStocksService,
-    getStockByIdService
+    getStockByIdService,
+    getWatchlistService,
+    updateWatchlistService,
+    deleteWatchlistService
 } from "../models/userModel.js";
 
 
@@ -80,8 +83,39 @@ export const getAllStocks=async(req,res,next)=>{
 export const getStockById=async(req,res,next)=>{
     try{
         const stock=await getStockByIdService(req.params.id);
-        if(!stock)return handleResponse(res,404,"stock not found");
+        if(!stock)return handleResponse(res,404,"Stock not found");
         handleResponse(res,200,"Stock fetched successfully",stock);
+    }catch(error){
+        next(error);
+    }
+};
+
+export const getWatchlist=async(req,res,next)=>{
+    try{
+        const wl=await getWatchlistService(req.params.id);
+        if(!wl)return handleResponse(res,404,"Watchlist not found");
+        handleResponse(res,200,"Watchlist fetched successfully",wl);
+    }catch(error){
+        next(error);
+    }
+};
+
+export const updateWatchlist=async(req,res,next)=>{
+    const{u_id,id}=req.body;
+    try{
+        const updatedwl=await updateWatchlistService(u_id,id);
+        if(!updatedwl)return handleResponse(res,404,"Watchlist not found");
+        handleResponse(res,200,"Watchlist updated successfully",updatedwl);
+    }catch(error){
+        next(error);
+    }
+};
+
+export const deleteWatchlist=async(req,res,next)=>{
+    try{
+        const deletewl=await deleteWatchlistService(req.params.id);
+        if(!deletewl)return handleResponse(res,404,"Watchlist not found");
+        handleResponse(res,200,"Watchlist deleted successfully",deletewl);
     }catch(error){
         next(error);
     }
