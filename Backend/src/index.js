@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import stockRoutes from "./routes/stockRoutes.js";
+import stockRoutes from "./routes/Routes.js";
 import errorhandling from "./middleware/errorHandler.js";
 
 dotenv.config();    //take the config values
