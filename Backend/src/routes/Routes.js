@@ -12,7 +12,6 @@ router.put("/watchlist",updateWatchlist);
 router.delete("/watchlist/:u_id/:id",deleteWatchlist);
 
 router.get("/",getAllStocks);
-// router.get("/user",getAllUsers);
 router.get("/:id",getStockById);
 
 // router.get("/user",getAllUsers);
