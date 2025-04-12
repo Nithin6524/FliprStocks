@@ -1,7 +1,7 @@
 import express from 'express';
 import { 
     getAllStocks, getStockById ,getWatchlist,updateWatchlist,deleteWatchlist
-    } from '../controllers/userController.js';
+    } from '../controllers/stockController.js';
 
 const router =express.Router();
 

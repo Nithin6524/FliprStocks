@@ -4,7 +4,7 @@ import {
     getWatchlistService,
     updateWatchlistService,
     deleteWatchlistService
-} from "../models/userModel.js";
+} from "../models/stockModel.js";
 
 
 const handleResponse=(res,status,message,data=null)=>{

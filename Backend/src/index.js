@@ -2,9 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./config/db.js";
-import stockRoutes from "./routes/userRoutes.js";
+import stockRoutes from "./routes/stockRoutes.js";
 import errorhandling from "./middleware/errorHandler.js";
-import createUsertable from "./data/createUsertable.js";
 
 dotenv.config();    //take the config values
 
