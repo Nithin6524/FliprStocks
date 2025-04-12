@@ -44,7 +44,7 @@ export const getWatchlistService = async () => {
 
 export const updateWatchlistService = async (u_id,id) => {
     const result = await pool.query(
-        `INSERT INTO watchlist (user_id, ticker, added_at)
+        `INSERT INTO watchlists (user_id, ticker, added_at)
          VALUES ($1, $2, NOW())
          ON CONFLICT (user_id, ticker) DO NOTHING
          RETURNING *`,
