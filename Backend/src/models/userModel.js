@@ -1,5 +1,5 @@
 import pool from "../config/db.js";
-import bcrypt from "bcrypt"; // For password hashing
+import bcrypt from "bcryptjs";
 
 // Register a new user
 export const createUserService = async (user_id,name, email, password) => {

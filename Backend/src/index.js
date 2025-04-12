@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./config/db.js";
 import stockRoutes from "./routes/Routes.js";
+import userRoutes from "./routes/user_routes.js";
 import errorhandling from "./middleware/errorHandler.js";
 
 dotenv.config();    //take the config values
@@ -16,7 +17,7 @@ app.use(cors());
 
 // routes 
 app.use("/stocks",stockRoutes);
-
+app.use("/users",userRoutes);
 // errorhandling
 app.use(errorhandling);
 
