@@ -38,7 +38,7 @@ export const getStockByIdService = async (id) => {
 
 
 export const getWatchlistService = async () => {
-    const result = await pool.query('select * from watchlist');
+    const result = await pool.query('select * from watchlists');
     return result.rows[0];
 };
 
@@ -54,6 +54,6 @@ export const updateWatchlistService = async (u_id,id) => {
 };
 
 export const deleteWatchlistService = async (id) => {
-    const result = await pool.query('DELETE FROM watchlist WHERE ticker = $1 RETURNING *', [id]);
+    const result = await pool.query('DELETE FROM watchlists WHERE ticker = $1 RETURNING *', [id]);
     return result.rows[0];
 };
