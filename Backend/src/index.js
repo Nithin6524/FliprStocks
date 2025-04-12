@@ -1,10 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import pool from "./config/db.js";
-import stockRoutes from "./routes/userRoutes.js";
+import stockRoutes from "./routes/stockRoutes.js";
 import errorhandling from "./middleware/errorHandler.js";
-import createUsertable from "./data/createUsertable.js";
 
 dotenv.config();    //take the config values
 
@@ -21,14 +19,6 @@ app.use("/stocks",stockRoutes);
 // errorhandling
 app.use(errorhandling);
 
-//creating table
-// createUsertable();
-
-//
-app.get("/",async(req,res)=>{
-    const result=await pool.query("SELECT current_database()");
-    res.send(`The database name is : ${result.rows[0].current_database}`);
-})
 
 
 //server
