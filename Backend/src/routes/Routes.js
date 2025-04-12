@@ -1,7 +1,10 @@
 import express from 'express';
 import { 
-    getAllStocks, getStockById ,getWatchlist,updateWatchlist,deleteWatchlist
+    getAllStocks, getStockById 
     } from '../controllers/stockController.js';
+import{
+    getWatchlist,updateWatchlist,deleteWatchlist
+    } from '../controllers/wlController.js';
 
 const router =express.Router();
 

@@ -20,8 +20,6 @@ app.use("/stocks",stockRoutes);
 // errorhandling
 app.use(errorhandling);
 
-//creating table
-// createUsertable();
 
 //
 app.get("/",async(req,res)=>{
