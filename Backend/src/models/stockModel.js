@@ -30,8 +30,6 @@ export const searchStocksService = async (search, industry) => {
     return result.rows;
 };
 
-import pool from '../config/db.js';
-
 
 
 // stocks

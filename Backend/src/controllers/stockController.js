@@ -4,8 +4,7 @@ import {
 } from "../models/stockModel.js";
 
 import { 
-    searchStocksService, 
-    getStockByIdService 
+    searchStocksService
 } from "../models/stockModel.js";
 
 
