@@ -9,7 +9,7 @@ import {
   DollarSign,
   LineChart,
   Search,
-  Timer,
+  Timer,    
   TrendingDown,
   TrendingUp,
 } from "lucide-react"
@@ -17,6 +17,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+
+import SearchStocks from "@/components/search-components"
 
 // Stock data
 const popularStocks = [
@@ -138,51 +140,7 @@ export function HomePage() {
                           <span className="gradient-text">Lorem Ipsum</span>
                       </h1>
 
-                      {/* Search bar */}
-                      <div
-                          className={`search-container relative z-20 mx-auto max-w-2xl ${
-                              searchActive ? "active" : ""
-                          }`}
-                      >
-                          <div className="relative">
-                              <div
-                                  className={`search-backdrop fixed inset-0 bg-black/50 backdrop-blur-sm ${
-                                      searchActive ? "active" : ""
-                                  }`}
-                                  onClick={handleBackdropClick}
-                              ></div>
-
-                              <div className="relative rounded-full bg-white/10 p-1 backdrop-blur-md">
-                                  <div className="flex items-center">
-                                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-white">
-                                          <Search className="h-5 w-5" />
-                                      </div>
-                                      <Input
-                                          ref={searchInputRef}
-                                          type="text"
-                                          placeholder="Search for stocks, indices, or cryptocurrencies..."
-                                          className="h-12 flex-1 border-none bg-transparent pl-2 text-white placeholder:text-white/50 focus:ring-0"
-                                          value={searchQuery}
-                                          onChange={(e) =>
-                                              setSearchQuery(e.target.value)
-                                          }
-                                          onFocus={handleSearchFocus}
-                                          onBlur={handleSearchBlur}
-                                      />
-                                      {searchActive && (
-                                          <Button
-                                              variant="ghost"
-                                              size="icon"
-                                              className="h-12 w-12 rounded-full text-white hover:bg-white/10"
-                                              onClick={handleBackdropClick}
-                                          >
-                                              <ChevronRight className="h-5 w-5" />
-                                          </Button>
-                                      )}
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+                  <SearchStocks/>
                   </div>
               </div>
           </section>

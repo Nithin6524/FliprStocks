@@ -35,18 +35,19 @@ export const getStockById=async(req,res,next)=>{
 // Controller for searching and filtering stocks
 export const searchStocks = async (req, res, next) => {
     try {
-        const { search, industry } = req.query;
+        const { search } = req.query;
 
-        // Validate query parameters (optional, but good practice)
+        // Log incoming query for debugging
+        console.log("Received query:", { search });
+
+        // Validate query parameters
         if (search && typeof search !== "string") {
             return handleResponse(res, 400, "Search query must be a string");
         }
-        if (industry && typeof industry !== "string") {
-            return handleResponse(res, 400, "Industry query must be a string");
-        }
+     
 
-        // Fetch stocks from service
-        const stocks = await searchStocksService(search, industry);
+        // Fetch stocks
+        const stocks = await searchStocksService(search);
 
         // Handle empty results
         if (!stocks || stocks.length === 0) {
@@ -57,10 +58,9 @@ export const searchStocks = async (req, res, next) => {
             );
         }
 
-        // Success response
         handleResponse(res, 200, "Stocks fetched successfully", stocks);
     } catch (error) {
-        next(error); // Pass errors to Express error handler
+        next(error);
     }
 };
 
