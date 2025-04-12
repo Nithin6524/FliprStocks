@@ -9,11 +9,6 @@ import{
 
 const router =express.Router();
 
-
-
-
-
-
 // WATCHLIST ROUTES
 router.get("/watchlist",getWatchlist);
 router.post("/watchlist",updateWatchlist);
@@ -23,7 +18,6 @@ router.delete("/watchlist/:u_id/:id",deleteWatchlist);
 // STOCK ROUTES
 router.get("/",getAllStocks);
 router.get("/:id",getStockById);
-
 
 
 export default router;

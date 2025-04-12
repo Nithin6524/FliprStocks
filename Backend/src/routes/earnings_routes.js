@@ -1,12 +1,12 @@
 import express from 'express';
 
 import{
-    getOverview
-    } from '../controllers/overviewController.js';
+    getEarnings
+    } from '../controllers/earningsController.js';
 
 const router =express.Router();
     
 // USER ROUTE
-router.get("/:id",getOverview);
+router.get("/:id",getEarnings);
 
 export default router;

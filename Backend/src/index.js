@@ -5,6 +5,7 @@ import pool from "./config/db.js";
 import stockRoutes from "./routes/stocks_routes.js";
 import userRoutes from "./routes/user_routes.js";
 import overviewRoutes from "./routes/overview_routes.js";
+import earningsRoutes from "./routes/earnings_routes.js";
 import errorhandling from "./middleware/errorHandler.js";
 
 dotenv.config();    //take the config values
@@ -20,6 +21,7 @@ app.use(cors());
 app.use("/stocks",stockRoutes);
 app.use("/users",userRoutes);
 app.use("/overview",overviewRoutes);
+app.use("/earnings",earningsRoutes);
 
 // errorhandling
 app.use(errorhandling);
