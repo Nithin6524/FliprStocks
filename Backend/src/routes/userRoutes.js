@@ -1,14 +1,13 @@
 import express from 'express';
 import { 
-    getAllStocks, getStockById,
-    //createUser, deleteUser, getAllUsers, getUserById, updateUser 
+    getAllStocks, getStockById 
     } from '../controllers/userController.js';
 
 const router =express.Router();
 
-router.get("/stocks",getAllStocks);
+router.get("/",getAllStocks);
 // router.get("/user",getAllUsers);
-router.get("/stocks/:id",getStockById);
+router.get("/:id",getStockById);
 // router.put("/user/:id",updateUser);
 // router.delete("/user/:id",deleteUser);
 
