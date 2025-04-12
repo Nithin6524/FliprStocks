@@ -20,4 +20,5 @@ router.get("/",getAllStocks);
 router.get("/:id",getStockById);
 
 
+
 export default router;

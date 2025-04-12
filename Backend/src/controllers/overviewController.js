@@ -18,3 +18,14 @@ export const getOverview=async(req,res,next)=>{
         next(error);
     }
 };
+
+export const getHistory=async(req,res,next)=>{
+    try{
+        const stock=await getHistoryService (req.params.id);
+        if(!stock)return handleResponse(res,404,"History for stock not found");
+        handleResponse(res,200,"History for stock fetched successfully",stock);
+    }catch(error){
+        next(error);
+    }
+};
+
