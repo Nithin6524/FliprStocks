@@ -1,9 +1,33 @@
-import * as React from "react"
+"use client"
 
+import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
+    // Use useEffect to ensure this only runs on client side
+    const [isClient, setIsClient] = React.useState(false)
+
+    React.useEffect(() => {
+      setIsClient(true)
+    }, [])
+
+    if (!isClient) {
+      // Return a simplified version for SSR that won't cause hydration mismatches
+      return (
+        <input
+          type={type}
+          className={cn(
+            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base",
+            className
+          )}
+          ref={ref}
+          {...props}
+          readOnly
+        />
+      )
+    }
+
     return (
       <input
         type={type}

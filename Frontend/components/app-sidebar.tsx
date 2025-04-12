@@ -29,11 +29,6 @@ const navItems = [
     icon: Calendar,
   },
   {
-    title: "Ownership",
-    href: "/ownership",
-    icon: Users,
-  },
-  {
     title: "Financials",
     href: "/financials",
     icon: PieChart,
@@ -43,6 +38,11 @@ const navItems = [
     href: "/news",
     icon: Newspaper,
   },
+  {
+    title:"Watchlist",
+    href:"/watchlist",
+    icon:Newspaper,
+  }
 ]
 
 export function AppSidebar() {
