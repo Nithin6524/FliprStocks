@@ -54,7 +54,7 @@ export function NewsPage() {
                 title: "Apple's AI Strategy: What to Expect at WWDC 2024",
                 source: "TechCrunch",
                 date: "2 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/stock.jpg",
                 category: "Technology",
                 summary:
                   "Apple is expected to unveil its AI strategy at WWDC 2024, potentially introducing new features for iOS 18 and macOS 15.",
@@ -63,7 +63,7 @@ export function NewsPage() {
                 title: "Apple Reports Strong Q2 Earnings, Beats Expectations",
                 source: "Bloomberg",
                 date: "5 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/fghj.jpeg",
                 category: "Earnings",
                 summary:
                   "Apple reported Q2 earnings that exceeded analyst expectations, with strong performance in Services and iPhone sales.",
@@ -72,7 +72,7 @@ export function NewsPage() {
                 title: "Apple's Services Revenue Hits All-Time High in Latest Quarter",
                 source: "CNBC",
                 date: "6 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/asd.jpg",
                 category: "Earnings",
                 summary:
                   "Apple's services segment, including App Store, Apple Music, and Apple TV+, reached a new record in the latest quarter.",
@@ -81,7 +81,7 @@ export function NewsPage() {
                 title: "Apple Supplier TSMC Reports Strong Demand for Advanced Chips",
                 source: "Reuters",
                 date: "8 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/stock.jpg",
                 category: "Supply Chain",
                 summary:
                   "TSMC, a key Apple supplier, reported strong demand for advanced chips, potentially benefiting Apple's future products.",
@@ -90,7 +90,7 @@ export function NewsPage() {
                 title: "Apple's iPhone 16 Production Ramps Up Ahead of Fall Launch",
                 source: "Wall Street Journal",
                 date: "10 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/fghj.jpeg",
                 category: "Products",
                 summary:
                   "Apple has reportedly started ramping up production of the iPhone 16 series ahead of its expected fall launch.",
@@ -99,7 +99,7 @@ export function NewsPage() {
                 title: "Tech Stocks Rally as Market Anticipates Fed Rate Cut",
                 source: "Financial Times",
                 date: "12 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/asd.jpg",
                 category: "Market",
                 summary:
                   "Tech stocks, including Apple, rallied as investors anticipate a potential Federal Reserve interest rate cut.",
@@ -148,7 +148,7 @@ export function NewsPage() {
                 title: "Apple's AI Strategy: What to Expect at WWDC 2024",
                 source: "TechCrunch",
                 date: "2 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/stock.jpg",
                 category: "Technology",
                 summary:
                   "Apple is expected to unveil its AI strategy at WWDC 2024, potentially introducing new features for iOS 18 and macOS 15.",
@@ -157,7 +157,7 @@ export function NewsPage() {
                 title: "Apple Reports Strong Q2 Earnings, Beats Expectations",
                 source: "Bloomberg",
                 date: "5 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/stock.jpg",
                 category: "Earnings",
                 summary:
                   "Apple reported Q2 earnings that exceeded analyst expectations, with strong performance in Services and iPhone sales.",
@@ -166,7 +166,7 @@ export function NewsPage() {
                 title: "Apple's Services Revenue Hits All-Time High in Latest Quarter",
                 source: "CNBC",
                 date: "6 hours ago",
-                image: "/placeholder.svg?height=200&width=400",
+                image: "/stock.jpg",
                 category: "Earnings",
                 summary:
                   "Apple's services segment, including App Store, Apple Music, and Apple TV+, reached a new record in the latest quarter.",

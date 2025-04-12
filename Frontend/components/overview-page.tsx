@@ -10,82 +10,6 @@ import LightweightChart from "@/components/chart"
 export function OverviewPage() {
   const chartRef = useRef<HTMLCanvasElement>(null)
 
-  // // Simple chart rendering
-  // useEffect(() => {
-  //   const canvas = chartRef.current
-  //   if (!canvas) return
-
-  //   const ctx = canvas.getContext("2d")
-  //   if (!ctx) return
-
-  //   canvas.width = canvas.offsetWidth * 2
-  //   canvas.height = canvas.offsetHeight * 2
-  //   ctx.scale(2, 2) // For retina displays
-
-  //   // Chart dimensions
-  //   const width = canvas.width / 2
-  //   const height = canvas.height / 2
-  //   const padding = 20
-
-  //   // Generate random data points (would be replaced with actual stock data)
-  //   const dataPoints = 60
-  //   const data: number[] = []
-  //   let prev = 150
-  //   for (let i = 0; i < dataPoints; i++) {
-  //     prev += (Math.random() - 0.5) * 10
-  //     prev = Math.max(100, Math.min(200, prev))
-  //     data.push(prev)
-  //   }
-
-  //   // Calculate x and y scales
-  //   const xScale = (width - padding * 2) / (dataPoints - 1)
-  //   const yMin = Math.min(...data) * 0.95
-  //   const yMax = Math.max(...data) * 1.05
-  //   const yScale = (height - padding * 2) / (yMax - yMin)
-
-  //   // Draw the line
-  //   ctx.beginPath()
-  //   ctx.moveTo(padding, height - padding - (data[0] - yMin) * yScale)
-
-  //   for (let i = 1; i < dataPoints; i++) {
-  //     ctx.lineTo(padding + i * xScale, height - padding - (data[i] - yMin) * yScale)
-  //   }
-
-  //   // Style the line
-  //   ctx.strokeStyle = "#22d3ee" // Primary color
-  //   ctx.lineWidth = 2
-  //   ctx.stroke()
-
-  //   // Fill area under the line
-  //   ctx.lineTo(padding + (dataPoints - 1) * xScale, height - padding)
-  //   ctx.lineTo(padding, height - padding)
-  //   ctx.closePath()
-  //   ctx.fillStyle = "rgba(34, 211, 238, 0.1)" // Primary color with opacity
-  //   ctx.fill()
-
-  //   // Draw the axes
-  //   ctx.beginPath()
-  //   ctx.moveTo(padding, padding)
-  //   ctx.lineTo(padding, height - padding)
-  //   ctx.lineTo(width - padding, height - padding)
-  //   ctx.strokeStyle = "rgba(255, 255, 255, 0.2)"
-  //   ctx.lineWidth = 1
-  //   ctx.stroke()
-
-  //   // Handle resize
-  //   const handleResize = () => {
-  //     if (canvas) {
-  //       canvas.width = canvas.offsetWidth * 2
-  //       canvas.height = canvas.offsetHeight * 2
-  //       ctx.scale(2, 2)
-  //       // Redraw chart...
-  //     }
-  //   }
-
-  //   window.addEventListener("resize", handleResize)
-  //   return () => window.removeEventListener("resize", handleResize)
-  // }, [])
-
   return (
       <div className="space-y-8">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -167,7 +91,7 @@ export function OverviewPage() {
                       <CardTitle>Stock Price History</CardTitle>
                   </CardHeader>
                   <CardContent>
-                      <div className="h-[300px] w-full">
+                      <div className="h-[100px] w-[500px]">
                           <LightweightChart
                               
                           />
