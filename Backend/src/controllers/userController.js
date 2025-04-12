@@ -31,7 +31,7 @@
 // };
 
 import { createUserService, loginUserService } from "../models/userModel.js";
-import { v4 as uuidv4 } from 'uuid';
+
 
 const handleResponse = (res, status, message, data = null) => {
     res.status(status).json({
@@ -44,8 +44,7 @@ const handleResponse = (res, status, message, data = null) => {
 export const signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        const user_id = uuidv4(); // Generate a unique user_id
-        const user = await createUserService(user_id, name, email, password);
+        const user = await createUserService(name, email, password); // no UUID needed here
         handleResponse(res, 201, "User created successfully", user);
     } catch (err) {
         handleResponse(res, 400, err.message);

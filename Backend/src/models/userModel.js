@@ -43,9 +43,23 @@
 // };
 import pool from "../config/db.js";
 import bcrypt from "bcryptjs";
+import { v4 as uuidv4 } from 'uuid';
+// // Register a new user
+// export const createUserService = async (name, email, password) => {
+//     const hashedPassword = await bcrypt.hash(password, 10);
 
-// Register a new user
-export const createUserService = async (user_id, name, email, password) => {
+//     const result = await pool.query(
+//         `INSERT INTO users (user_id, name, email, password)
+//          VALUES ($1, $2, $3, $4)
+//          RETURNING user_id, name, email`,
+//         [name, email, hashedPassword]
+//     );
+
+//     return result.rows[0];
+// };
+
+export const createUserService = async (name, email, password) => {
+    const user_id = uuidv4();
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await pool.query(
