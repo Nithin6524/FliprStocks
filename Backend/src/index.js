@@ -1,45 +1,27 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import pool from "./config/db.js";
+import stockRoutes from "./routes/Routes.js";
+import errorhandling from "./middleware/errorHandler.js";
 
-dotenv.config();
+dotenv.config();    //take the config values
 
+const app=express();
+const port=process.env.port || 3001;
 
-const app = express();
-
-
-const PORT = process.env.PORT || 5000;
-
-
-
-// Middlewares
+// middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));    
-
 app.use(cors());
 
+// routes 
+app.use("/stocks",stockRoutes);
 
-// Routes
-
-
-// Error handlin middleware
-
-
-//test
-
-app.get("/", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT current_database()");
-        res.send(`Connected to ${result.rows[0].current_database}`);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
-
-//server running    
+// errorhandling
+app.use(errorhandling);
 
 
-app.listen( PORT , () => console.log(`server running on port ${PORT}`));
 
-
+//server
+app.listen(port,()=>{
+    console.log('Server is running on port '+port);
+})
