@@ -34,25 +34,6 @@ export const updateWatchlist=async(req,res,next)=>{
     }
 };
 
-// export const deleteWatchlist=async(req,res,next)=>{
-//     try{
-//         const deletewl=await deleteWatchlistService(req.params.id);
-//         if(!deletewl)return handleResponse(res,404,"Watchlist not found");
-//         handleResponse(res,200,"Watchlist deleted successfully",deletewl);
-//     }catch(error){
-//         next(error);
-//     }
-// };
-// export const deleteWatchlist = async (req, res, next) => {
-//     const { u_id, id } = req.params;
-//     try {
-//         const deletewl = await deleteWatchlistService(u_id, id);
-//         if (!deletewl) return handleResponse(res, 404, "Watchlist not found");
-//         handleResponse(res, 200, "Watchlist deleted successfully", deletewl);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
 
 export const deleteWatchlist = async (req, res, next) => {
     try {
