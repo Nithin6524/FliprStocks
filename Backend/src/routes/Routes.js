@@ -6,7 +6,13 @@ import{
     getWatchlist,updateWatchlist,deleteWatchlist
     } from '../controllers/wlController.js';
 
+
 const router =express.Router();
+
+
+
+
+
 
 // WATCHLIST ROUTES
 router.get("/watchlist",getWatchlist);
