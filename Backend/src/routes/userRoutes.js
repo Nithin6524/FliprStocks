@@ -13,9 +13,9 @@ router.get("/:id",getStockById);
 // router.put("/user/:id",updateUser);
 // router.delete("/user/:id",deleteUser);
 
-router.get("/watchlist",getAllUsers);
-router.put("/watchlist",updateUser);
-router.delete("/watchlist/:id",deleteUser);
+router.get("/watchlist",getWatchlist);
+router.put("/watchlist",updateWatchlist);
+router.delete("/watchlist/:id",deleteWatchlist);
 
 
 export default router;

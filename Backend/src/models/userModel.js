@@ -31,6 +31,12 @@ export const getAllStocksService = async () => {
     return result.rows;
 };
 
+export const getStockByIdService = async (id) => {
+    const result = await pool.query('SELECT short_name FROM stocks WHERE ticker = $1', [id]);
+    return result.rows[0];
+};
+
+
 export const getWatchlistService = async (id) => {
     const result = await pool.query('select * from watchlist', [id]);
     return result.rows[0];
