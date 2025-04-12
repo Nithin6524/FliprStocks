@@ -17,7 +17,7 @@ export const getStockByIdService = async (id) => {
 // New service for searching and filtering stocks
 export const searchStocksService = async (search, industry) => {
     let query =
-        "SELECT ticker, short_name, long_name, industry FROM stocks WHERE 1=1";
+        "SELECT * FROM stocks WHERE 1=1";
     const values = [];
     let paramCount = 1;
 
