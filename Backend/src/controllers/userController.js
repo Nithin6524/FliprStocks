@@ -1,9 +1,4 @@
 import {
-    // createUserService,
-    // getAllUsersService,
-    // getUserByIdService,
-    // updateUserService,
-    // deleteUserService
     getAllStocksService,
     getStockByIdService
 } from "../models/userModel.js";
