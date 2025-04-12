@@ -1,3 +1,35 @@
+import pool from "../config/db.js";
+
+
+
+// New service for searching and filtering stocks
+export const searchStocksService = async (search, industry) => {
+    let query =
+        "SELECT * FROM stocks WHERE 1=1";
+    const values = [];
+    let paramCount = 1;
+
+    // Add search condition for short_name or long_name
+    if (search) {
+        query += ` AND (short_name ILIKE $${paramCount} OR long_name ILIKE $${
+            paramCount + 1
+        })`;
+        values.push(`%${search}%`, `%${search}%`);
+        paramCount += 2;
+    }
+
+    // Add industry filter
+    if (industry) {
+        query += ` AND industry ILIKE $${paramCount}`;
+        values.push(`%${industry}%`);
+        paramCount += 1;
+    }
+
+    // Execute query
+    const result = await pool.query(query, values);
+    return result.rows;
+};
+
 import pool from '../config/db.js';
 
 
