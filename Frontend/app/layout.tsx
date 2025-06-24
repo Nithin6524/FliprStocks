@@ -12,16 +12,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>StockInsight - Market Analysis Platform</title>
-        <meta name="description" content="Advanced stock market analysis platform" />
+        <title>Finnd</title>
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SidebarProvider>
             {children}
             <Toaster />
           </SidebarProvider>
-        </ThemeProvider>
       </body>
     </html>
   )

@@ -10,18 +10,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function NewsPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4 md:p-6 bg-white">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-bold">Market News</h1>
-          <p className="text-muted-foreground">Latest updates and insights for AAPL and the market</p>
+          <h1 className="text-3xl font-bold text-[#1F2937]">Market News</h1>
+          <p className="text-[#6B7280] mt-1">Latest updates and insights for AAPL and the market</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative w-full md:w-auto">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input type="text" placeholder="Search news..." className="pl-9 md:w-[200px]" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6B7280]" />
+            <Input 
+              type="text" 
+              placeholder="Search news..." 
+              className="pl-9 md:w-[200px] bg-white border-[#E5E7EB] text-[#1F2937] placeholder:text-[#6B7280]" 
+            />
           </div>
-          <Button variant="outline" size="sm">
+          <Button className="bg-white text-[#1F2937] hover:bg-[#D1D5DB]" size="sm">
             <Filter className="mr-2 h-4 w-4" /> Filter
           </Button>
         </div>
@@ -29,20 +33,20 @@ export function NewsPage() {
 
       <Tabs defaultValue="all">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-          <TabsList>
-            <TabsTrigger value="all">All News</TabsTrigger>
-            <TabsTrigger value="aapl">AAPL News</TabsTrigger>
-            <TabsTrigger value="market">Market News</TabsTrigger>
-            <TabsTrigger value="earnings">Earnings</TabsTrigger>
+          <TabsList className="bg-white">
+            <TabsTrigger value="all" className="data-[state=active]:bg-[#06B6D4] data-[state=active]:text-white">All News</TabsTrigger>
+            <TabsTrigger value="aapl" className="data-[state=active]:bg-[#06B6D4] data-[state=active]:text-white">AAPL News</TabsTrigger>
+            <TabsTrigger value="market" className="data-[state=active]:bg-[#06B6D4] data-[state=active]:text-white">Market News</TabsTrigger>
+            <TabsTrigger value="earnings" className="data-[state=active]:bg-[#06B6D4] data-[state=active]:text-white">Earnings</TabsTrigger>
           </TabsList>
           <Select defaultValue="latest">
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] bg-white border-[#E5E7EB] text-[#1F2937]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="latest">Latest First</SelectItem>
-              <SelectItem value="oldest">Oldest First</SelectItem>
-              <SelectItem value="relevance">Relevance</SelectItem>
+            <SelectContent className="bg-white border-[#E5E7EB]">
+              <SelectItem value="latest" className="text-[#1F2937] hover:bg-white">Latest First</SelectItem>
+              <SelectItem value="oldest" className="text-[#1F2937] hover:bg-white">Oldest First</SelectItem>
+              <SelectItem value="relevance" className="text-[#1F2937] hover:bg-white">Relevance</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -105,7 +109,7 @@ export function NewsPage() {
                   "Tech stocks, including Apple, rallied as investors anticipate a potential Federal Reserve interest rate cut.",
               },
             ].map((article, index) => (
-              <Card key={index} className="overflow-hidden">
+              <Card key={index} className="overflow-hidden bg-white">
                 <div className="aspect-video overflow-hidden">
                   <img
                     src={article.image || "/placeholder.svg"}
@@ -115,21 +119,25 @@ export function NewsPage() {
                 </div>
                 <CardHeader className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-primary/20 px-2 py-1 text-xs font-medium text-primary">
+                    <span className="rounded-full bg-[#06B6D4]/20 px-2 py-1 text-xs font-medium text-[#06B6D4]">
                       {article.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-xs text-[#6B7280]">
                       <Calendar className="h-3 w-3" /> {article.date}
                     </span>
                   </div>
-                  <CardTitle className="line-clamp-2 text-lg">{article.title}</CardTitle>
+                  <CardTitle className="line-clamp-2 text-lg text-[#1F2937]">{article.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
-                  <p className="line-clamp-3 text-sm text-muted-foreground">{article.summary}</p>
+                  <p className="line-clamp-3 text-sm text-[#6B7280]">{article.summary}</p>
                 </CardContent>
-                <CardFooter className="flex items-center justify-between border-t border-border p-4">
-                  <span className="text-xs font-medium">{article.source}</span>
-                  <Button variant="ghost" size="sm" className="h-8 gap-1">
+                <CardFooter className="flex items-center justify-between border-t border-[#E5E7EB] p-4">
+                  <span className="text-xs font-medium text-[#1F2937]">{article.source}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 gap-1 text-[#06B6D4] hover:text-[#06B6D4]/80 hover:bg-white"
+                  >
                     Read More <ExternalLink className="h-3 w-3" />
                   </Button>
                 </CardFooter>
@@ -137,7 +145,9 @@ export function NewsPage() {
             ))}
           </div>
           <div className="mt-8 flex justify-center">
-            <Button variant="outline">Load More News</Button>
+            <Button className="bg-white text-[#1F2937] hover:bg-[#D1D5DB]">
+              Load More News
+            </Button>
           </div>
         </TabsContent>
 
@@ -172,7 +182,7 @@ export function NewsPage() {
                   "Apple's services segment, including App Store, Apple Music, and Apple TV+, reached a new record in the latest quarter.",
               },
             ].map((article, index) => (
-              <Card key={index} className="overflow-hidden">
+              <Card key={index} className="overflow-hidden bg-white">
                 <div className="aspect-video overflow-hidden">
                   <img
                     src={article.image || "/placeholder.svg"}
@@ -182,21 +192,25 @@ export function NewsPage() {
                 </div>
                 <CardHeader className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-primary/20 px-2 py-1 text-xs font-medium text-primary">
+                    <span className="rounded-full bg-[#06B6D4]/20 px-2 py-1 text-xs font-medium text-[#06B6D4]">
                       {article.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-xs text-[#6B7280]">
                       <Calendar className="h-3 w-3" /> {article.date}
                     </span>
                   </div>
-                  <CardTitle className="line-clamp-2 text-lg">{article.title}</CardTitle>
+                  <CardTitle className="line-clamp-2 text-lg text-[#1F2937]">{article.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
-                  <p className="line-clamp-3 text-sm text-muted-foreground">{article.summary}</p>
+                  <p className="line-clamp-3 text-sm text-[#6B7280]">{article.summary}</p>
                 </CardContent>
-                <CardFooter className="flex items-center justify-between border-t border-border p-4">
-                  <span className="text-xs font-medium">{article.source}</span>
-                  <Button variant="ghost" size="sm" className="h-8 gap-1">
+                <CardFooter className="flex items-center justify-between border-t border-[#E5E7EB] p-4">
+                  <span className="text-xs font-medium text-[#1F2937]">{article.source}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 gap-1 text-[#06B6D4] hover:text-[#06B6D4]/80 hover:bg-white"
+                  >
                     Read More <ExternalLink className="h-3 w-3" />
                   </Button>
                 </CardFooter>
@@ -236,7 +250,7 @@ export function NewsPage() {
                   "Market volatility has increased as the Q2 earnings season begins, with investors closely watching tech giants.",
               },
             ].map((article, index) => (
-              <Card key={index} className="overflow-hidden">
+              <Card key={index} className="overflow-hidden bg-white">
                 <div className="aspect-video overflow-hidden">
                   <img
                     src={article.image || "/placeholder.svg"}
@@ -246,21 +260,25 @@ export function NewsPage() {
                 </div>
                 <CardHeader className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-primary/20 px-2 py-1 text-xs font-medium text-primary">
+                    <span className="rounded-full bg-[#06B6D4]/20 px-2 py-1 text-xs font-medium text-[#06B6D4]">
                       {article.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-xs text-[#6B7280]">
                       <Calendar className="h-3 w-3" /> {article.date}
                     </span>
                   </div>
-                  <CardTitle className="line-clamp-2 text-lg">{article.title}</CardTitle>
+                  <CardTitle className="line-clamp-2 text-lg text-[#1F2937]">{article.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
-                  <p className="line-clamp-3 text-sm text-muted-foreground">{article.summary}</p>
+                  <p className="line-clamp-3 text-sm text-[#6B7280]">{article.summary}</p>
                 </CardContent>
-                <CardFooter className="flex items-center justify-between border-t border-border p-4">
-                  <span className="text-xs font-medium">{article.source}</span>
-                  <Button variant="ghost" size="sm" className="h-8 gap-1">
+                <CardFooter className="flex items-center justify-between border-t border-[#E5E7EB] p-4">
+                  <span className="text-xs font-medium text-[#1F2937]">{article.source}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 gap-1 text-[#06B6D4] hover:text-[#06B6D4]/80 hover:bg-white"
+                  >
                     Read More <ExternalLink className="h-3 w-3" />
                   </Button>
                 </CardFooter>
@@ -299,7 +317,7 @@ export function NewsPage() {
                 summary: "An overview of what to expect from major tech companies during the current earnings season.",
               },
             ].map((article, index) => (
-              <Card key={index} className="overflow-hidden">
+              <Card key={index} className="overflow-hidden bg-white">
                 <div className="aspect-video overflow-hidden">
                   <img
                     src={article.image || "/placeholder.svg"}
@@ -309,21 +327,25 @@ export function NewsPage() {
                 </div>
                 <CardHeader className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-primary/20 px-2 py-1 text-xs font-medium text-primary">
+                    <span className="rounded-full bg-[#06B6D4]/20 px-2 py-1 text-xs font-medium text-[#06B6D4]">
                       {article.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-xs text-[#6B7280]">
                       <Calendar className="h-3 w-3" /> {article.date}
                     </span>
                   </div>
-                  <CardTitle className="line-clamp-2 text-lg">{article.title}</CardTitle>
+                  <CardTitle className="line-clamp-2 text-lg text-[#1F2937]">{article.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
-                  <p className="line-clamp-3 text-sm text-muted-foreground">{article.summary}</p>
+                  <p className="line-clamp-3 text-sm text-[#6B7280]">{article.summary}</p>
                 </CardContent>
-                <CardFooter className="flex items-center justify-between border-t border-border p-4">
-                  <span className="text-xs font-medium">{article.source}</span>
-                  <Button variant="ghost" size="sm" className="h-8 gap-1">
+                <CardFooter className="flex items-center justify-between border-t border-[#E5E7EB] p-4">
+                  <span className="text-xs font-medium text-[#1F2937]">{article.source}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 gap-1 text-[#06B6D4] hover:text-[#06B6D4]/80 hover:bg-white"
+                  >
                     Read More <ExternalLink className="h-3 w-3" />
                   </Button>
                 </CardFooter>
@@ -333,53 +355,7 @@ export function NewsPage() {
         </TabsContent>
       </Tabs>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Featured Analysis</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="flex gap-4">
-              <div className="h-20 w-20 shrink-0 overflow-hidden rounded-md">
-                <img
-                  src="/placeholder.svg?height=80&width=80"
-                  alt="Apple's AI Strategy"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <h3 className="font-medium">Apple's AI Strategy: Implications for Investors</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  An in-depth analysis of Apple's AI strategy and what it means for long-term investors.
-                </p>
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">By John Smith</span>
-                  <span className="text-xs text-muted-foreground">1 day ago</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="h-20 w-20 shrink-0 overflow-hidden rounded-md">
-                <img
-                  src="/placeholder.svg?height=80&width=80"
-                  alt="Apple's Services Growth"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <h3 className="font-medium">The Growth of Apple's Services Ecosystem</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Examining the rapid growth of Apple's services segment and its impact on the company's valuation.
-                </p>
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">By Jane Doe</span>
-                  <span className="text-xs text-muted-foreground">2 days ago</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+   
     </div>
   )
 }
