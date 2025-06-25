@@ -1,17 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import {
     ChartContainer,
     ChartTooltip,
@@ -38,8 +27,19 @@ import {
     DollarSign,
     Building2,
     Coins,
-    Home,
+    Plus,
 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { AddTransactionModal } from "./addTransactionModal";
 
 // Mock data
 const portfolioData = [
@@ -51,7 +51,7 @@ const portfolioData = [
     { date: "Jun", value: 1150000 },
 ];
 
-const holdings = [
+const initialHoldings = [
     {
         name: "Reliance Industries",
         symbol: "RELIANCE",
@@ -102,17 +102,11 @@ const holdings = [
     },
 ];
 
-const assetAllocation = [
-    { name: "Equity", value: 260400, percentage: 22.6, color: "#06B6D4" },
-    { name: "Mutual Funds", value: 900000, percentage: 78.3, color: "#10B981" },
-    { name: "Gold", value: 870000, percentage: 75.7, color: "#F59E0B" },
-    { name: "Cash", value: 45000, percentage: 3.9, color: "#6B7280" },
-];
-
-const recentTransactions = [
+const initialTransactions = [
     {
         type: "buy",
         asset: "HDFC Bank",
+        symbol: "HDFCBANK",
         quantity: 20,
         price: 1580,
         date: "2024-06-20",
@@ -121,6 +115,7 @@ const recentTransactions = [
     {
         type: "sip",
         asset: "HDFC FlexiCap Fund",
+        symbol: "HDFC_FLEXI",
         quantity: 0,
         price: 0,
         date: "2024-06-15",
@@ -129,6 +124,7 @@ const recentTransactions = [
     {
         type: "sell",
         asset: "TCS",
+        symbol: "TCS",
         quantity: 15,
         price: 3200,
         date: "2024-06-10",
@@ -137,6 +133,7 @@ const recentTransactions = [
     {
         type: "buy",
         asset: "Gold ETF",
+        symbol: "GOLDBEES",
         quantity: 50,
         price: 4350,
         date: "2024-06-05",
@@ -144,14 +141,30 @@ const recentTransactions = [
     },
 ];
 
+const assetAllocation = [
+    { name: "Equity", value: 260400, percentage: 22.6, color: "#06B6D4" },
+    { name: "Mutual Funds", value: 900000, percentage: 78.3, color: "#10B981" },
+    { name: "Gold", value: 870000, percentage: 75.7, color: "#F59E0B" },
+    { name: "Cash", value: 45000, percentage: 3.9, color: "#6B7280" },
+];
+
 export default function PortfolioDashboard() {
     const [timeFilter, setTimeFilter] = useState("1M");
+    const [holdings, setHoldings] = useState(initialHoldings);
+    const [transactions, setTransactions] = useState(initialTransactions);
+    const [cashBalance, setCashBalance] = useState(45000);
+    const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
 
-    const totalValue = 1150000;
-    const totalInvested = 1054100;
+    // Calculate portfolio values
+    const totalValue =
+        holdings.reduce((sum, holding) => sum + holding.currentValue, 0) +
+        cashBalance;
+    const totalInvested = holdings.reduce(
+        (sum, holding) => sum + holding.investedAmount,
+        0
+    );
     const totalPnL = totalValue - totalInvested;
     const totalPnLPercent = (totalPnL / totalInvested) * 100;
-    const availableCash = 45000;
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat("en-IN", {
@@ -174,6 +187,119 @@ export default function PortfolioDashboard() {
         }
     };
 
+    const handleAddTransaction = (newTransaction: {
+        type: string;
+        asset: string;
+        symbol: string;
+        quantity: number;
+        price: number;
+        date: string;
+    }) => {
+        const amount = newTransaction.quantity * newTransaction.price;
+
+        // Update cash balance
+        if (newTransaction.type === "buy") {
+            if (amount > cashBalance) {
+                alert("Insufficient cash balance");
+                return;
+            }
+            setCashBalance(cashBalance - amount);
+        } else if (newTransaction.type === "sell") {
+            setCashBalance(cashBalance + amount);
+        }
+
+        // Add transaction to history
+        const transaction = {
+            ...newTransaction,
+            amount: amount,
+            date: new Date().toISOString().split("T")[0],
+        };
+        setTransactions([transaction, ...transactions]);
+
+        // Update holdings
+        if (newTransaction.type === "buy") {
+            const existingHolding = holdings.find(
+                (h) => h.symbol === newTransaction.symbol
+            );
+
+            if (existingHolding) {
+                // Update existing holding
+                const updatedHolding = {
+                    ...existingHolding,
+                    qty: existingHolding.qty + newTransaction.quantity,
+                    investedAmount: existingHolding.investedAmount + amount,
+                    avgPrice:
+                        (existingHolding.investedAmount + amount) /
+                        (existingHolding.qty + newTransaction.quantity),
+                };
+
+                setHoldings(
+                    holdings.map((h) =>
+                        h.symbol === newTransaction.symbol ? updatedHolding : h
+                    )
+                );
+            } else {
+                // Add new holding
+                const newHolding = {
+                    name: newTransaction.asset,
+                    symbol: newTransaction.symbol,
+                    qty: newTransaction.quantity,
+                    avgPrice: newTransaction.price,
+                    currentPrice: newTransaction.price, // Assume same as buy price initially
+                    investedAmount: amount,
+                    currentValue: amount, // Same as invested initially
+                    pnl: 0,
+                    pnlPercent: 0,
+                    type: "equity", // Default type
+                };
+
+                setHoldings([...holdings, newHolding]);
+            }
+        } else if (newTransaction.type === "sell") {
+            // Sell transaction
+            const existingHolding = holdings.find(
+                (h) => h.symbol === newTransaction.symbol
+            );
+
+            if (existingHolding) {
+                if (existingHolding.qty < newTransaction.quantity) {
+                    alert("Not enough shares to sell");
+                    return;
+                }
+
+                const updatedQty =
+                    existingHolding.qty - newTransaction.quantity;
+
+                if (updatedQty === 0) {
+                    // Remove holding if quantity becomes 0
+                    setHoldings(
+                        holdings.filter(
+                            (h) => h.symbol !== newTransaction.symbol
+                        )
+                    );
+                } else {
+                    // Update holding
+                    const updatedHolding = {
+                        ...existingHolding,
+                        qty: updatedQty,
+                        investedAmount: existingHolding.avgPrice * updatedQty,
+                    };
+
+                    setHoldings(
+                        holdings.map((h) =>
+                            h.symbol === newTransaction.symbol
+                                ? updatedHolding
+                                : h
+                        )
+                    );
+                }
+            }
+        }
+
+        // Close modal
+        setIsTransactionModalOpen(false);
+    };
+
     return (
         <div className="space-y-8 p-4 md:p-6 bg-white">
             <div className="max-w-7xl mx-auto">
@@ -187,6 +313,20 @@ export default function PortfolioDashboard() {
                             Track your investments and performance
                         </p>
                     </div>
+                    <div className="flex items-center gap-4">
+                        <Button
+                            className="bg-[#06B6D4] text-white hover:bg-[#0891B2] flex items-center gap-2"
+                            onClick={() => setIsTransactionModalOpen(true)}
+                        >
+                            <Plus className="h-5 w-5" />
+                            Add Transaction
+                        </Button>
+                    </div>
+                    <AddTransactionModal
+                        isOpen={isTransactionModalOpen}
+                        onOpenChange={setIsTransactionModalOpen}
+                        onAddTransaction={handleAddTransaction}
+                    />
                 </div>
 
                 {/* Summary Cards */}
@@ -249,7 +389,7 @@ export default function PortfolioDashboard() {
                                     Available Cash
                                 </div>
                                 <div className="text-lg font-bold text-[#1F2937]">
-                                    {formatCurrency(availableCash)}
+                                    {formatCurrency(cashBalance)}
                                 </div>
                             </div>
                         </CardContent>
@@ -302,8 +442,8 @@ export default function PortfolioDashboard() {
                                             key={period}
                                             className={`rounded-md px-3 py-1 text-xs font-medium ${
                                                 timeFilter === period
-                                                    ? "bg-[#06B6D4]/20 text-[#06B6D4]"
-                                                    : "bg-white text-[#6B7280]"
+                                                    ? "bg-sky-500 text-white"
+                                                    : "bg-white text-black"
                                             }`}
                                             onClick={() =>
                                                 setTimeFilter(period)
@@ -403,7 +543,7 @@ export default function PortfolioDashboard() {
                         <div className="overflow-x-auto">
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="hover:bg-white">
+                                    <TableRow className="hover:bg-[#E5E7EB]">
                                         <TableHead className="text-[#6B7280]">
                                             Asset
                                         </TableHead>
@@ -428,7 +568,7 @@ export default function PortfolioDashboard() {
                                     {holdings.map((holding, index) => (
                                         <TableRow
                                             key={index}
-                                            className="hover:bg-white"
+                                            className="hover:bg-[#F9FAFB]"
                                         >
                                             <TableCell>
                                                 <div className="flex items-center gap-3">
@@ -510,10 +650,10 @@ export default function PortfolioDashboard() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {recentTransactions.map((transaction, index) => (
+                            {transactions.map((transaction, index) => (
                                 <div
                                     key={index}
-                                    className="flex items-center justify-between rounded-md bg-white p-3"
+                                    className="flex items-center justify-between rounded-md  p-3"
                                 >
                                     <div className="flex items-center gap-3">
                                         <div
