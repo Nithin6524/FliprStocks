@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
     ArrowUp,
     BarChart3,
@@ -11,143 +11,87 @@ import {
     Users,
 } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
-import { cn } from "@/src/lib/utils"; // Import cn utility
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "@/src/components/ui/card";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/src/components/ui/tabs";
+import TradingViewChart from "@/src/components/ui/TradingViewChart";
+import { useSmartStockData } from "@/src/hooks/useSmartStockData";
 
 export function OverviewPage() {
-    const chartRef = useRef<HTMLCanvasElement>(null);
+    const symbol = "MARUTI";
 
-    // Simple chart rendering
+    const {
+        loading: infoLoading,
+        error,
+        loadData,
+    } = useSmartStockData(symbol, "1M");
+
+    // Load initial data
     useEffect(() => {
-        const canvas = chartRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-
-        canvas.width = canvas.offsetWidth * 2;
-        canvas.height = canvas.offsetHeight * 2;
-        ctx.scale(2, 2); // For retina displays
-
-        // Chart dimensions
-        const width = canvas.width / 2;
-        const height = canvas.height / 2;
-        const padding = 20;
-
-        // Generate random data points (would be replaced with actual stock data)
-        const dataPoints = 60;
-        const data: number[] = [];
-        let prev = 150;
-        for (let i = 0; i < dataPoints; i++) {
-            prev += (Math.random() - 0.5) * 10;
-            prev = Math.max(100, Math.min(200, prev));
-            data.push(prev);
-        }
-
-        // Calculate x and y scales
-        const xScale = (width - padding * 2) / (dataPoints - 1);
-        const yMin = Math.min(...data) * 0.95;
-        const yMax = Math.max(...data) * 1.05;
-        const yScale = (height - padding * 2) / (yMax - yMin);
-
-        // Draw the line
-        ctx.beginPath();
-        ctx.moveTo(padding, height - padding - (data[0] - yMin) * yScale);
-
-        for (let i = 1; i < dataPoints; i++) {
-            ctx.lineTo(
-                padding + i * xScale,
-                height - padding - (data[i] - yMin) * yScale
-            );
-        }
-
-        // Style the line
-        ctx.strokeStyle = "#06B6D4"; // Teal accent
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Fill area under the line
-        ctx.lineTo(padding + (dataPoints - 1) * xScale, height - padding);
-        ctx.lineTo(padding, height - padding);
-        ctx.closePath();
-        ctx.fillStyle = "rgba(6, 182, 212, 0.1)"; // Teal with opacity
-        ctx.fill();
-
-        // Draw the axes
-        ctx.beginPath();
-        ctx.moveTo(padding, padding);
-        ctx.lineTo(padding, height - padding);
-        ctx.lineTo(width - padding, height - padding);
-        ctx.strokeStyle = "#6B7280"; // Neutral gray for axes
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        // Handle resize
-        const handleResize = () => {
-            if (canvas) {
-                canvas.width = canvas.offsetWidth * 2;
-                canvas.height = canvas.offsetHeight * 2;
-                ctx.scale(2, 2);
-                // Redraw chart
-                ctx.beginPath();
-                ctx.moveTo(
-                    padding,
-                    height - padding - (data[0] - yMin) * yScale
-                );
-                for (let i = 1; i < dataPoints; i++) {
-                    ctx.lineTo(
-                        padding + i * xScale,
-                        height - padding - (data[i] - yMin) * yScale
-                    );
-                }
-                ctx.strokeStyle = "#06B6D4";
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                ctx.lineTo(
-                    padding + (dataPoints - 1) * xScale,
-                    height - padding
-                );
-                ctx.lineTo(padding, height - padding);
-                ctx.closePath();
-                ctx.fillStyle = "rgba(6, 182, 212, 0.1)";
-                ctx.fill();
-                ctx.beginPath();
-                ctx.moveTo(padding, padding);
-                ctx.lineTo(padding, height - padding);
-                ctx.lineTo(width - padding, height - padding);
-                ctx.strokeStyle = "#6B7280";
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            }
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        loadData(symbol, "1M");
     }, []);
+
+    const sampleStockInfo = {
+        symbol: "MARUTI",
+        companyName: "Maruti Suzuki India Ltd.",
+        currentPrice: 11247.85,
+        change: 158.45,
+        changePercent: 1.43,
+        marketCap: "₹3.40L Cr",
+        peRatio: 25.84,
+        weekRange52: "₹9,000.00 - ₹13,680.00",
+        dividendYield: 1.2,
+    };
+
+    const displayStockInfo = sampleStockInfo;
 
     return (
         <div className="space-y-8 p-4 md:p-6 bg-white">
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
                 <div>
                     <h1 className="text-3xl font-bold text-[#1F2937]">
-                        AAPL Overview
+                        {displayStockInfo.symbol} Overview
                     </h1>
                     <p className="text-[#6B7280] mt-1">
-                        Apple Inc. - Technology | NASDAQ
+                        {displayStockInfo.companyName} - Automotive | NSE
                     </p>
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="text-2xl font-bold text-[#1F2937]">
-                        $187.32
+                        ₹
+                        {displayStockInfo.currentPrice.toLocaleString("en-IN", {
+                            minimumFractionDigits: 2,
+                        })}
                     </div>
-                    <div className="flex items-center gap-1 rounded-full bg-[#10B981]/20 px-2 py-1 text-sm font-medium text-[#10B981]">
-                        <ArrowUp className="h-3 w-3" />
-                        1.42%
+                    <div
+                        className={`flex items-center gap-1 rounded-full px-2 py-1 text-sm font-medium ${
+                            displayStockInfo.changePercent >= 0
+                                ? "bg-[#10B981]/20 text-[#10B981]"
+                                : "bg-[#EF4444]/20 text-[#EF4444]"
+                        }`}
+                    >
+                        <ArrowUp
+                            className={`h-3 w-3 ${
+                                displayStockInfo.changePercent < 0
+                                    ? "rotate-180"
+                                    : ""
+                            }`}
+                        />
+                        {Math.abs(displayStockInfo.changePercent).toFixed(2)}%
                     </div>
                 </div>
             </div>
 
+            {/* Stock Info Cards */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <Card className="bg-white">
                     <CardContent className="flex items-center gap-4 p-4">
@@ -159,7 +103,7 @@ export function OverviewPage() {
                                 Market Cap
                             </div>
                             <div className="text-lg font-bold text-[#1F2937]">
-                                $2.94T
+                                {displayStockInfo.marketCap}
                             </div>
                         </div>
                     </CardContent>
@@ -174,7 +118,7 @@ export function OverviewPage() {
                                 P/E Ratio
                             </div>
                             <div className="text-lg font-bold text-[#1F2937]">
-                                31.24
+                                {displayStockInfo.peRatio}
                             </div>
                         </div>
                     </CardContent>
@@ -189,7 +133,7 @@ export function OverviewPage() {
                                 52W Range
                             </div>
                             <div className="text-lg font-bold text-[#1F2937]">
-                                $124.17 - $199.62
+                                {displayStockInfo.weekRange52}
                             </div>
                         </div>
                     </CardContent>
@@ -204,49 +148,32 @@ export function OverviewPage() {
                                 Dividend Yield
                             </div>
                             <div className="text-lg font-bold text-[#1F2937]">
-                                0.51%
+                                {displayStockInfo.dividendYield}%
                             </div>
                         </div>
                     </CardContent>
                 </Card>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-3">
-                <Card className="lg:col-span-2 bg-white">
+            <div className="flex flex-col lg:flex-row gap-6">
+                {/* Chart Section */}
+                <Card className="flex-1 bg-white">
                     <CardHeader>
                         <CardTitle className="text-[#1F2937]">
-                            Stock Price History
+                            Stock Price Chart
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="h-[300px] w-full">
-                            <canvas
-                                ref={chartRef}
-                                className="h-full w-full"
-                                style={{ width: "100%", height: "100%" }}
-                            />
-                        </div>
-                        <div className="mt-4 flex justify-center gap-2">
-                            {["1D", "1W", "1M", "3M", "1Y", "5Y"].map(
-                                (period) => (
-                                    <button
-                                        key={period}
-                                        className={cn(
-                                            "rounded-md px-3 py-1 text-xs font-medium",
-                                            period === "1M"
-                                                ? "bg-[#06B6D4]/20 text-[#06B6D4]"
-                                                : "bg-white text-[#6B7280] hover:bg-[#D1D5DB]"
-                                        )}
-                                    >
-                                        {period}
-                                    </button>
-                                )
-                            )}
-                        </div>
+                        <TradingViewChart
+                            symbol={symbol}
+                            height={300}
+                            defaultPeriod="1M"
+                        />
                     </CardContent>
                 </Card>
 
-                <Card className="bg-white">
+                {/* Company Profile Section */}
+                <Card className="w-full lg:w-[30%] bg-white">
                     <CardHeader>
                         <CardTitle className="text-[#1F2937]">
                             Company Profile
@@ -260,7 +187,7 @@ export function OverviewPage() {
                                     Website
                                 </div>
                                 <div className="text-sm text-[#6B7280]">
-                                    www.apple.com
+                                    www.marutisuzuki.com
                                 </div>
                             </div>
                         </div>
@@ -271,7 +198,7 @@ export function OverviewPage() {
                                     Employees
                                 </div>
                                 <div className="text-sm text-[#6B7280]">
-                                    164,000
+                                    18,000+
                                 </div>
                             </div>
                         </div>
@@ -280,11 +207,9 @@ export function OverviewPage() {
                                 About
                             </div>
                             <p className="mt-1 text-sm text-[#6B7280]">
-                                Apple Inc. designs, manufactures, and markets
-                                smartphones, personal computers, tablets,
-                                wearables, and accessories worldwide. The
-                                company offers iPhone, Mac, iPad, and wearables,
-                                home, and accessories.
+                                Maruti Suzuki India Limited is an Indian
+                                multinational automobile manufacturer
+                                headquartered in New Delhi...
                             </p>
                         </div>
                     </CardContent>
@@ -326,7 +251,7 @@ export function OverviewPage() {
                                         Market Cap
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        $2.94T
+                                        ₹3.40L Cr
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -334,7 +259,7 @@ export function OverviewPage() {
                                         Enterprise Value
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        $2.87T
+                                        ₹3.25L Cr
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -342,7 +267,7 @@ export function OverviewPage() {
                                         Trailing P/E
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        31.24
+                                        25.84
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -350,7 +275,7 @@ export function OverviewPage() {
                                         Forward P/E
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        28.76
+                                        22.45
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -358,7 +283,7 @@ export function OverviewPage() {
                                         PEG Ratio (5yr)
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        2.54
+                                        1.84
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -366,7 +291,7 @@ export function OverviewPage() {
                                         Price/Sales
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        7.94
+                                        3.24
                                     </div>
                                 </div>
                             </div>
@@ -378,7 +303,7 @@ export function OverviewPage() {
                                         Profit Margin
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        25.31%
+                                        12.34%
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -386,7 +311,7 @@ export function OverviewPage() {
                                         Operating Margin
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        30.42%
+                                        15.67%
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -394,7 +319,7 @@ export function OverviewPage() {
                                         ROA
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        21.34%
+                                        8.45%
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -402,7 +327,7 @@ export function OverviewPage() {
                                         ROE
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        160.09%
+                                        18.92%
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -410,7 +335,7 @@ export function OverviewPage() {
                                         Revenue
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        $383.29B
+                                        ₹1,12,500 Cr
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -418,7 +343,7 @@ export function OverviewPage() {
                                         Revenue Per Share
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        $24.27
+                                        ₹3,721
                                     </div>
                                 </div>
                             </div>
@@ -430,7 +355,7 @@ export function OverviewPage() {
                                         Beta
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        1.28
+                                        1.12
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -438,15 +363,15 @@ export function OverviewPage() {
                                         52-Week Change
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        +32.45%
+                                        +15.67%
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
                                     <div className="text-sm text-[#6B7280]">
-                                        S&P500 52-Week Change
+                                        Nifty 52-Week Change
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        +24.32%
+                                        +12.45%
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -454,7 +379,7 @@ export function OverviewPage() {
                                         52 Week High
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        $199.62
+                                        ₹13,680.00
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -462,7 +387,7 @@ export function OverviewPage() {
                                         52 Week Low
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        $124.17
+                                        ₹9,000.00
                                     </div>
                                 </div>
                                 <div className="rounded-md bg-white p-3">
@@ -470,7 +395,7 @@ export function OverviewPage() {
                                         50-Day Moving Average
                                     </div>
                                     <div className="text-lg font-medium text-[#1F2937]">
-                                        $182.45
+                                        ₹10,845.23
                                     </div>
                                 </div>
                             </div>
