@@ -4,9 +4,13 @@ import cors from "cors";
 import compression from "compression";
 import dotenv from "dotenv";
 import stockRoutes from "./routes/stockRoutes.js";
+// Add this to your main app.js file after existing routes
+import transactionRoutes from "./routes/transactions.js";
 
 dotenv.config();
 const app = express();
+
+app.use(express.json()); // ✅ THIS parses JSON request bodies
 
 // Middlewares
 app.use(helmet());
@@ -21,13 +25,9 @@ app.use(compression());
 
 app.use("/api/stocks", stockRoutes);
 
-// Request logging middleware (development only)
-if (process.env.NODE_ENV === "development") {
-    app.use((req, res, next) => {
-        console.log(`${req.method} ${req.path} - ${new Date().toISOString()}`);
-        next();
-    });
-}
+// Mount the transaction routes
+app.use("/api/transactions", transactionRoutes);
+
 
 // Health check endpoint
 app.get("/health", (req, res) => {
